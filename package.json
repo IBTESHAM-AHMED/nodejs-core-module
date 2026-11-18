@@ -1,0 +1,25 @@
+{
+  "name": "nodejs-core-module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IBTESHAM-AHMED/nodejs-core-module.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/IBTESHAM-AHMED/nodejs-core-module/issues"
+  },
+  "homepage": "https://github.com/IBTESHAM-AHMED/nodejs-core-module#readme",
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
+  }
+}
