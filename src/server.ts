@@ -39,4 +39,4 @@ const server : Server =createServer((req : IncomingMessage,res: ServerResponse)=
 server.listen(5000,()=>{
     console.log("Server is running Successfully!")
 })
-// TODO: "/?x=1" returns 404 because of url === "/". Parse with new URL() to ignore the query string
+// TODO: "/?x=1" returns 404 because of url === "/". Parse with new URL() to ignore the query string!
