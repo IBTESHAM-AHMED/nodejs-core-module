@@ -17,8 +17,8 @@ const routeHandler = (req: IncomingMessage, res: ServerResponse)=>{
 
     }else if(url?.startsWith("/products")){
         // ! matches ANY method and "/productsXYZ"; `?.` because url can be undefined
-        // * delegate to the controller (it must call res.end())
-        productController(req,res);
+        
+        productController(req,res);  //  delegate to the controller (it must call res.end())
     }else{
         // * fallback: unknown routes get a 404
         res.writeHead(404,{'Content-Type': 'application/json',})
