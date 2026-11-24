@@ -3,9 +3,10 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { productService } from '../service/product.service';
 import console from 'console';
 import type { IProduct } from '../types/product';
+import { bodyParse } from '../utils/parseBody';
 
 // TODO: branch on req.method here (GET list, POST create, PUT update, DELETE remove)
-const productController = (req: IncomingMessage, res: ServerResponse) => {
+const productController = async(req: IncomingMessage, res: ServerResponse) => {
 
         const url = req.url;
         const method = req.method;
@@ -20,7 +21,7 @@ const productController = (req: IncomingMessage, res: ServerResponse) => {
         if (url === "/products" && method === "GET") {
                 // const products = [{}];
                 const products = productService();// [{},{},{}]
-                
+
                 res.writeHead(200,
                         { "content-type": "application/json" } // ? header names are case-insensitive
                 );
@@ -32,7 +33,7 @@ const productController = (req: IncomingMessage, res: ServerResponse) => {
                 );
         } else if (method === "GET" && id !== null) {
                 const products = productService();// [{},{},{}]
-                const product = products.find((p:IProduct)=>p.id===id);
+                const product = products.find((p: IProduct) => p.id === id);
                 res.writeHead(200,
                         { "content-type": "application/json" } // ? header names are case-insensitive
                 );
@@ -42,7 +43,21 @@ const productController = (req: IncomingMessage, res: ServerResponse) => {
                                 data: product,
                         }),
                 );
-        }else if(method==="POST"){};
+        } else if (method === "POST" && url === "/products") {
+                //*
+                const body = await bodyParse(req);
+                console.log(body);
+              
+                res.writeHead(201,
+                        { "content-type": "application/json" } // ? header names are case-insensitive
+                );
+                res.end(
+                        JSON.stringify({
+                                message: "Products created successfully",
+                                
+                        }),
+                );
+        };
 }
 
 export default productController;
