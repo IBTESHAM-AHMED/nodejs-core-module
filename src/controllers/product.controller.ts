@@ -6,6 +6,7 @@ import type { IProduct } from '../types/product';
 import { bodyParse } from '../utils/parseBody';
 import path from 'node:path';
 
+
 // ? async because POST awaits the body
 const productController = async (req: IncomingMessage, res: ServerResponse) => {
 
@@ -20,7 +21,7 @@ const productController = async (req: IncomingMessage, res: ServerResponse) => {
                 "products" ? Number(urlParams[2]) : null;
 
         // ? id is a number for "/products/1", or null when the URL isn't under /products
-        console.log(id);
+        // console.log(id);
         // * route 1: GET /products -> list all
         if (url === "/products" && method === "GET") {
                 // const products = [{}];
@@ -51,10 +52,9 @@ const productController = async (req: IncomingMessage, res: ServerResponse) => {
                 );
                 // * route 3: POST /products -> create (reads the JSON body)
         } else if (method === "POST" && url === "/products") {
-                //*
+                // console.log(body);
                 // ? wait for the full body, parsed into an object
                 const body = await bodyParse(req);
-                // console.log(body);
                 const newProduct = {
                         id: Date.now(),
                         ...body
@@ -74,6 +74,39 @@ const productController = async (req: IncomingMessage, res: ServerResponse) => {
                                 data: newProduct,
                         }),
                 );
+        } else if (method === "PUT" && id !== null) {
+
+                const body = await bodyParse(req);
+                const products = productService();// [{},{}]
+                const index = products.findIndex((p: IProduct) => p.id === id);
+                // console.log(index);
+                if (index < 0) {
+                        res.writeHead(404,
+                                { "content-type": "application/json" } // ? header names are case-insensitive
+                        );
+                        res.end(
+                                JSON.stringify({
+                                        message: "Product Not Found!",
+
+                                }),
+                        );
+                }
+                // console.log(products[index]); //? shows the product data for that index
+                
+                // ? replace the product with the new body but keep its original id (id first, so body can't override it)
+                products[index] = { id: products[index].id, ...body }; //?
+                createProduct(products);
+                
+                res.writeHead(200,
+                        { "content-type": "application/json" } // ? header names are case-insensitive
+                );
+                res.end(
+                        JSON.stringify({
+                                message: "Products updated successfully",
+                                data: products[index],
+                        }),
+                );
+
         };
 }
 
