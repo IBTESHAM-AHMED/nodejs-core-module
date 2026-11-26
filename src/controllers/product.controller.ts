@@ -5,6 +5,7 @@ import console from 'console';
 import type { IProduct } from '../types/product';
 import { bodyParse } from '../utils/parseBody';
 import path from 'node:path';
+import { sendResponse } from '../utils/sendResponse';
 
 
 // ? async because POST awaits the body
@@ -26,16 +27,16 @@ const productController = async (req: IncomingMessage, res: ServerResponse) => {
         if (url === "/products" && method === "GET") {
                 // const products = [{}];
                 const products = productService();// [{},{},{}]
-
-                res.writeHead(200,
-                        { "content-type": "application/json" } // ? header names are case-insensitive
-                );
-                res.end(
-                        JSON.stringify({
-                                message: "Products retrieved successfully",
-                                data: products,
-                        }),
-                );
+                sendResponse(res,true,200,"Products retrieved successfully",products);
+                // res.writeHead(200,
+                //         { "content-type": "application/json" } // ? header names are case-insensitive
+                // );
+                // res.end(
+                //         JSON.stringify({
+                //                 message: "Products retrieved successfully",
+                //                 data: products,
+                //         }),
+                // );
                 // * route 2: GET /products/:id -> one product
         } else if (method === "GET" && id !== null) {
                 const products = productService();// [{},{},{}]
