@@ -25,9 +25,15 @@ const productController = async (req: IncomingMessage, res: ServerResponse) => {
         // console.log(id);
         // * route 1: GET /products -> list all
         if (url === "/products" && method === "GET") {
+                try {
+                        const products = productService();// [{},{},{}]
+                        sendResponse(res, true, 200, "Products retrieved successfully", products);
+                } catch (error) {
+                        sendResponse(res, false, 500, "Internal Server Error");
+                }
+
+
                 // const products = [{}];
-                const products = productService();// [{},{},{}]
-                sendResponse(res,true,200,"Products retrieved successfully",products);
                 // res.writeHead(200,
                 //         { "content-type": "application/json" } // ? header names are case-insensitive
                 // );
